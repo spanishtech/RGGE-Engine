@@ -42,6 +42,9 @@ Network Trash Folder
 Temporary Items
 .apdisk
 .classpath
-data/music/death.aiff
-jars/lib/ibxm.jar
-jars/lib/slick-util.jar
+data/*
+jars/*
+.settings/
+.project
+lwjgl-2.9.1/
+bin/*
