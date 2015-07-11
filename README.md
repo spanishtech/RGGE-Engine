@@ -18,3 +18,6 @@ After implementing you need to write the line
 Notice: You can add a true to any Listener constructor to enable strict filtering. This means an event will only be sent if it matches the filter EXACTLY.
 
 There is a lack of a overall game-object for now but you can create one if you want.
+
+##Documentation
+[Link](http://spanishtech.github.io/RGGE-Engine/ "Documentation")
