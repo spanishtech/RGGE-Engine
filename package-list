@@ -1,4 +1,4 @@
-me.soxey6.engine.events.input.keys
+me.soxey6.engine.events.input.key
 me.soxey6.engine.events.input.mouse.button
 me.soxey6.engine.events.input.mouse.move
 me.soxey6.engine.events.input.mouse.scroll
@@ -15,6 +15,5 @@ me.soxey6.engine.objects
 me.soxey6.engine.objects.gui
 me.soxey6.engine.objects.render
 me.soxey6.engine.objects.render.animation
-me.soxey6.engine.render.animation
 me.soxey6.game.scenes
 me.soxey6.utils
