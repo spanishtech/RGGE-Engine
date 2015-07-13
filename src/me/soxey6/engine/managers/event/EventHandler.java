@@ -1,5 +1,5 @@
 package me.soxey6.engine.managers.event;
 
-public interface EventHandler {
-	public void onEvent(Event event);
+public interface EventHandler<T extends Event> {
+	public void onEvent(T event);
 }

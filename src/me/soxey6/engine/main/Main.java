@@ -14,7 +14,7 @@ public class Main
 	private static Repairer repairer;
 	public static void main(String[] args)
 	{
-		if(args[0].equalsIgnoreCase("repair"))
+		if(args.length>0&&args[0].equalsIgnoreCase("repair"))
 				repair();
 		setGame(new Game(gameName));
 

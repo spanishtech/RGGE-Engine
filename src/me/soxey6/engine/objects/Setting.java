@@ -6,20 +6,20 @@ import me.soxey6.engine.main.Wrapper;
  * This class is pretty terrible I really need to rewrite it.
  *
  */
-public class Setting extends Wrapper{
+public class Setting<T> extends Wrapper{
 
 	private String name;
-	private Object value;
+	private T value;
 	private boolean enabled;
 	
-	public Setting(String name, Object value)
+	public Setting(String name, T value)
 	{
 		this.name=name;
 		this.value=value;
 		this.enabled=true;
 	}
 
-	public void update(Object value)
+	public void update(T value)
 	{
 		this.value=value;
 	}
@@ -100,11 +100,11 @@ public class Setting extends Wrapper{
 		this.enabled = enabled;
 	}
 
-	public Object getValue() {
+	public T getValue() {
 		return value;
 	}
 
-	public void setValue(Object value) {
+	public void setValue(T value) {
 		this.value = value;
 	}
 }

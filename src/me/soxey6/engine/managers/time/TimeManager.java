@@ -7,12 +7,12 @@ import java.util.Timer;
 import java.util.TimerTask;
 
 import me.soxey6.engine.events.ticks.timer.TimerEvent;
-import me.soxey6.engine.events.ticks.timer.TimerHandler;
-import me.soxey6.engine.events.ticks.timer.TimerListener;
 import me.soxey6.engine.main.Game;
+import me.soxey6.engine.managers.event.EventListener;
 import me.soxey6.engine.managers.event.EventManager;
 import me.soxey6.utils.Logger;
 
+@SuppressWarnings("rawtypes")
 public class TimeManager implements Runnable
 {
 	public boolean shouldStop = false;
@@ -26,12 +26,12 @@ public class TimeManager implements Runnable
 		this.timers = new HashMap<Time,Timer>();
 	}
 	
-	public void newTimer(Time time, TimerHandler timerHandler)
+	public void newTimer(Time time, EventListener eventListener)
 	{
 		if(timers==null)
 			timers = new HashMap<Time,Timer>();
 		// Create a new timer and register the event
-		EventManager.getEventManager().addListener(new TimerListener(timerHandler, new TimerEvent(time.getInterval())));
+		EventManager.getEventManager().addListener(eventListener);
 		if(!isNewTimer(time))
 		{
 			timers.put(time ,new Timer(String.valueOf(time.getInterval())));
@@ -45,7 +45,6 @@ public class TimeManager implements Runnable
 		}
 	}
 
-	@SuppressWarnings("rawtypes")
 	private boolean isNewTimer(Time time) {
 		
 	    Iterator it = timers.entrySet().iterator();

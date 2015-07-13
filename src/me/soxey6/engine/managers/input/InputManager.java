@@ -9,7 +9,7 @@ import static org.lwjgl.glfw.GLFW.glfwSetMouseButtonCallback;
 import java.nio.DoubleBuffer;
 import java.util.ArrayList;
 
-import me.soxey6.engine.events.input.keys.KeyEvent;
+import me.soxey6.engine.events.input.key.KeyEvent;
 import me.soxey6.engine.events.input.mouse.button.MouseButtonEvent;
 import me.soxey6.engine.events.input.mouse.move.MouseMoveEvent;
 import me.soxey6.engine.main.Game;

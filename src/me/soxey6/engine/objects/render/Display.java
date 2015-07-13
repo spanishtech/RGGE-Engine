@@ -89,9 +89,9 @@ public class Display implements Runnable
         //Create a window.
         sizeX = GLFWvidmode.width(vidmode);
         sizeY = GLFWvidmode.height(vidmode);
-        Settings.getSettings().addSetting(new Setting("FULLSCREEN", fullscreen));
-        Settings.getSettings().addSetting(new Setting("RESOLUTION_X", fullscreen?GLFWvidmode.width(vidmode):800));
-        Settings.getSettings().addSetting(new Setting("RESOLUTION_Y", fullscreen?GLFWvidmode.height(vidmode):600));
+        Settings.getSettings().addSetting(new Setting<Boolean>("FULLSCREEN", fullscreen));
+        Settings.getSettings().addSetting(new Setting<Integer>("RESOLUTION_X", fullscreen?GLFWvidmode.width(vidmode):800));
+        Settings.getSettings().addSetting(new Setting<Integer>("RESOLUTION_Y", fullscreen?GLFWvidmode.height(vidmode):600));
         windowHandler = glfwCreateWindow(fullscreen?GLFWvidmode.width(vidmode):800, fullscreen?GLFWvidmode.height(vidmode):600, name, fullscreen? glfwGetPrimaryMonitor():NULL, NULL);
         if ( windowHandler == NULL )
             throw new RuntimeException("Failed to create the GLFW window");

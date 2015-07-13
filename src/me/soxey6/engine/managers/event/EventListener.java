@@ -6,23 +6,23 @@ package me.soxey6.engine.managers.event;
  * @author spanish
  *
  */
-public class EventListener implements Runnable{
-	private Event eventFilter;
-	private EventHandler eventHandler;
-	private Event event;
+public class EventListener<T, S extends Event> implements Runnable{
+	private S eventFilter;
+	private T parent;
+	private S event;
 	
 	private boolean strictFiltering;
 	
-	public EventListener(EventHandler eventHandler, Event event)
+	public EventListener(T parent, S event)
 	{
-		this.eventHandler = eventHandler;
+		this.parent = parent;
 		this.eventFilter = event;
 		this.strictFiltering = false;
 	}
 
-	public EventListener(EventHandler eventHandler, Event event, boolean strictFiltering)
+	public EventListener(T parent, S event, boolean strictFiltering)
 	{
-		this.eventHandler = eventHandler;
+		this.parent = parent;
 		this.eventFilter = event;
 		this.strictFiltering = true;
 	}
@@ -30,17 +30,26 @@ public class EventListener implements Runnable{
 
 	@Override
 	public void run() {
-		onEvent();
+		onEvent(event);
 	}
 	
-	public void onEvent()
+	protected void onEvent(){
+		
+		if(fitsFilter(event)){
+			onEvent(event);
+		}
+	}
+	
+	/**
+	 * This function is triggered for every event dispatched that matches the filter, this should be overridden
+	 * @param event An event containing the information of the event 
+	 */
+	public void onEvent(S event)
 	{
-		if(event!=null)
-			eventHandler.onEvent(event);
 	}
 	
 	
-	public boolean fitsFilter(Event event)
+	public boolean fitsFilter(S event)
 	{
 		if(strictFiltering)
 			return false;
@@ -48,20 +57,20 @@ public class EventListener implements Runnable{
 			return eventFilter.getClass().equals(event.getClass());
 	}
 
-	public Event getEventFilter() {
+	public S getEventFilter() {
 		return eventFilter;
 	}
 
-	public void setEventFilter(Event eventFilter) {
+	public void setEventFilter(S eventFilter) {
 		this.eventFilter = eventFilter;
 	}
 
-	public EventHandler getEventHandler() {
-		return eventHandler;
+	public T getEventHandler() {
+		return parent;
 	}
 
-	public void setEventHandler(EventHandler eventHandler) {
-		this.eventHandler = eventHandler;
+	public void setEventHandler(T eventHandler) {
+		this.parent = eventHandler;
 	}
 
 	public boolean isStrictFiltering() {
@@ -76,7 +85,7 @@ public class EventListener implements Runnable{
 		return event;
 	}
 
-	public void setEvent(Event event) {
+	public void setEvent(S event) {
 		this.event = event;
 	}
 }

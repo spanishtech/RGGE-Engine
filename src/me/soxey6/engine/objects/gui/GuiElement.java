@@ -1,21 +1,15 @@
 package me.soxey6.engine.objects.gui;
 
-import static org.lwjgl.glfw.GLFW.GLFW_PRESS;
 import me.soxey6.engine.events.input.mouse.button.MouseButtonEvent;
-import me.soxey6.engine.events.input.mouse.button.MouseButtonHandler;
 import me.soxey6.engine.events.input.mouse.move.MouseMoveEvent;
-import me.soxey6.engine.events.input.mouse.move.MouseMoveHandler;
-import me.soxey6.engine.events.input.mouse.move.MouseMoveListener;
 import me.soxey6.engine.events.ticks.render.RenderEvent;
-import me.soxey6.engine.events.ticks.render.RenderHandler;
-import me.soxey6.engine.events.ticks.render.RenderListener;
 import me.soxey6.engine.main.Wrapper;
-import me.soxey6.engine.managers.event.Event;
+import me.soxey6.engine.managers.event.EventListener;
 
 /**
  * The basic GuiElement class used for creating any UI element
 */
-public class GuiElement extends Wrapper implements MouseMoveHandler, MouseButtonHandler, RenderHandler
+public class GuiElement extends Wrapper
 {
 	private String name;
 	private Gui gui;
@@ -26,6 +20,10 @@ public class GuiElement extends Wrapper implements MouseMoveHandler, MouseButton
 	private boolean hovered;
 	private boolean clicked;
 	private boolean released;
+	
+	private EventListener<GuiElement, MouseMoveEvent> mouseMoveListener;
+	private EventListener<GuiElement, MouseButtonEvent> mouseButtonListener;
+	private EventListener<GuiElement, RenderEvent> renderListener;
 	
 	/**
 	 * The basic GuiElement class used for creating any UI element
@@ -49,31 +47,31 @@ public class GuiElement extends Wrapper implements MouseMoveHandler, MouseButton
 		
 		getGui().getGuiElements().add(this);
 		
-		getEventManager().addListener(new MouseMoveListener(this, new MouseMoveEvent(0, 0)));
-		getEventManager().addListener(new RenderListener(this, new RenderEvent()));
+		getEventManager().addListener(this.mouseMoveListener = new EventListener<GuiElement, MouseMoveEvent>(this, new MouseMoveEvent(0, 0)){
+			
+			@Override
+			public void onEvent(MouseMoveEvent event){
+				
+				if(event.getX()>=posX&&event.getX()<=posX+sizeX&&event.getY()>=posY&&event.getY()<=posY+sizeY){
+					hovered = true;
+					onHover(event.getX(), event.getY());
+				}else{
+					hovered = false;
+				}
+			}
+		});
+		
+		getEventManager().addListener(new EventListener<GuiElement, RenderEvent>(this, new RenderEvent()));
 		
 	}
 	
 
-	@Override
+	/*@Override
 	public void onRender(RenderEvent keyUpEvent) {
 		render();
 		
 	}
 
-	@Override
-	public void onEvent(Event event) {		
-	}
-
-	@Override
-	public void onMouseMove(MouseMoveEvent mouseMoveEvent) {
-		if(mouseMoveEvent.getX()>=posX&&mouseMoveEvent.getX()<=posX+sizeX&&mouseMoveEvent.getY()>=posY&&mouseMoveEvent.getY()<=posY+sizeY)
-		{
-			hovered = true;
-			onHover(mouseMoveEvent.getX(), mouseMoveEvent.getY());
-		}else
-			hovered = false;
-	}
 	
 
 	@Override
@@ -92,7 +90,7 @@ public class GuiElement extends Wrapper implements MouseMoveHandler, MouseButton
 			onRelease(mouseButtonEvent.getX(), mouseButtonEvent.getY());
 		}
 		
-	}
+	}*/
 	
 	/**
 	 * Triggered when the mouse clicks within the button
@@ -270,6 +268,39 @@ public class GuiElement extends Wrapper implements MouseMoveHandler, MouseButton
 
 	public void setReleased(boolean released) {
 		this.released = released;
+	}
+
+
+	public EventListener<GuiElement, MouseMoveEvent> getMouseMoveListener() {
+		return mouseMoveListener;
+	}
+
+
+	public void setMouseMoveListener(
+			EventListener<GuiElement, MouseMoveEvent> mouseMoveListener) {
+		this.mouseMoveListener = mouseMoveListener;
+	}
+
+
+	public EventListener<GuiElement, MouseButtonEvent> getMouseButtonListener() {
+		return mouseButtonListener;
+	}
+
+
+	public void setMouseButtonListener(
+			EventListener<GuiElement, MouseButtonEvent> mouseButtonListener) {
+		this.mouseButtonListener = mouseButtonListener;
+	}
+
+
+	public EventListener<GuiElement, RenderEvent> getRenderListener() {
+		return renderListener;
+	}
+
+
+	public void setRenderListener(
+			EventListener<GuiElement, RenderEvent> renderListener) {
+		this.renderListener = renderListener;
 	}
 	
 }

@@ -3,7 +3,7 @@ package me.soxey6.engine.managers.event;
 import java.util.ArrayList;
 import java.util.HashMap;
 
-import me.soxey6.engine.events.ticks.render.RenderListener;
+import me.soxey6.engine.events.ticks.render.RenderEvent;
 import me.soxey6.engine.events.ticks.timer.TimerEvent;
 import me.soxey6.engine.main.Game;
 
@@ -13,6 +13,8 @@ import me.soxey6.engine.main.Game;
  * @author pchilds
  *
  */
+@SuppressWarnings({"rawtypes","unchecked"})
+
 public class EventManager {
 		
 	private HashMap<Class<? extends Event>, ArrayList<EventListener>> eventListeners;
@@ -20,7 +22,7 @@ public class EventManager {
 	public EventManager()
 	{
 		eventManager=this;
-		eventListeners = new HashMap<Class<? extends Event> ,ArrayList<EventListener>>();
+		eventListeners = new HashMap<Class<? extends Event>, ArrayList<EventListener>>();
 	}
 
 	/**
@@ -29,12 +31,13 @@ public class EventManager {
 	 */
 	public void dispatch(Event event)
 	{
-		if(eventListeners.containsKey(event.getClass()))
+
+		if(eventListeners.containsKey(event.getClass())){
 			for(int i = 0; i<eventListeners.get(event.getClass()).size(); i++)
 			{
 				Game.getGame().getPerformanceMonitor().eps++;
 				if(eventListeners.get(event.getClass()).get(i)!=null)
-					if(!(eventListeners.get(event.getClass()).get(i) instanceof RenderListener||((event instanceof TimerEvent) && ((TimerEvent)event).getInterval()<500)))
+					if(needCurrentThread(event))
 					{
 						eventListeners.get(event.getClass()).get(i).setEvent(event);
 						new Thread(eventListeners.get(event.getClass()).get(i)).start();
@@ -43,9 +46,18 @@ public class EventManager {
 						eventListeners.get(event.getClass()).get(i).onEvent();
 					}
 			}
+		}
+			
 				
 	}
 	
+	private boolean needCurrentThread(Event event) {
+		
+		return  !(((event instanceof TimerEvent) &&
+				((TimerEvent) event).getInterval()<500) ||
+				event instanceof RenderEvent);
+	}
+
 	/**
 	 * Used for adding listeners
 	 * @param EventListener eventListener The listener to add

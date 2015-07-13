@@ -10,6 +10,7 @@ import me.soxey6.utils.Logger;
  * @author pchilds
  *
  */
+@SuppressWarnings("rawtypes")
 public class Settings{
 	// A hashmap of the settings for easy searching and retrieving of them
 	private HashMap<String, Setting> settingsList = new HashMap<String, Setting>();
@@ -49,17 +50,7 @@ public class Settings{
 	{
 		return settingsList.get(name);
 	}
-	
-	/**
-	 * Change a settings value with an Object
-	 * @param String name - The name of the setting to update
-	 * @param Object value - The value to update the setting with
-	 */
-	public void updateSetting(String name, Object value)
-	{
-		Logger.getLogger().log(Logger.getLogger().DEBUG, "Updating setting "+name+" to "+value);
-		settingsList.get(name).setValue(value);
-	}
+
 	
 	/**
 	 * This function will save all settings currently loaded

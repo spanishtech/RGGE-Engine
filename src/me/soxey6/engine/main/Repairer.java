@@ -2,8 +2,9 @@ package me.soxey6.engine.main;
 
 import java.util.ArrayList;
 
-import me.soxey6.engine.objects.Setting;
 
+import me.soxey6.engine.objects.Setting;
+@SuppressWarnings("rawtypes")
 public class Repairer {
 	private boolean successfulRepairBefore;
 	

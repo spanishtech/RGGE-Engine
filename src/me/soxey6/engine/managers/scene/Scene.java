@@ -15,6 +15,7 @@ import me.soxey6.engine.objects.gui.Gui;
  * @author spanish
  *
  */
+@SuppressWarnings("rawtypes")
 public class Scene extends Wrapper{
 	private final boolean LIMIT_LOGIC = true;
 	private final long LOGIC_INCREMENT_MS = 100;
