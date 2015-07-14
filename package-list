@@ -12,6 +12,7 @@ me.soxey6.engine.managers.scene
 me.soxey6.engine.managers.sound
 me.soxey6.engine.managers.time
 me.soxey6.engine.objects
+me.soxey6.engine.objects.game
 me.soxey6.engine.objects.gui
 me.soxey6.engine.objects.render
 me.soxey6.engine.objects.render.animation
