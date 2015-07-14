@@ -12,7 +12,7 @@ import java.util.ArrayList;
 import me.soxey6.engine.events.input.key.KeyEvent;
 import me.soxey6.engine.events.input.mouse.button.MouseButtonEvent;
 import me.soxey6.engine.events.input.mouse.move.MouseMoveEvent;
-import me.soxey6.engine.main.Game;
+import me.soxey6.engine.main.Engine;
 import me.soxey6.engine.main.Settings;
 import me.soxey6.engine.managers.event.EventManager;
 import me.soxey6.utils.Logger;
@@ -107,7 +107,7 @@ public class InputManager implements Runnable{
 	public void setupKeyboardCallbacks()
 	{
 		// Create a callback in GLFW
-		glfwSetKeyCallback(Game.getGame().getDisplay().getWindowHandler(), keyCallback = new GLFWKeyCallback() {
+		glfwSetKeyCallback(Engine.getEngine().getDisplay().getWindowHandler(), keyCallback = new GLFWKeyCallback() {
             @Override
             public void invoke(long window, int key, int scancode, int action, int mods) {
             	
@@ -115,15 +115,15 @@ public class InputManager implements Runnable{
             	EventManager.getEventManager().dispatch(new KeyEvent(new Key(key, action)));
             	
             	// Hardcode the debug key
-                if ( key == GLFW_KEY_F8 && action == GLFW_RELEASE && !Game.getGame().getPerformanceThread().isAlive() && !Game.getGame().getPerformanceMonitor().shouldStop)
-                	Game.getGame().getPerformanceThread().start();
+                if ( key == GLFW_KEY_F8 && action == GLFW_RELEASE && !Engine.getEngine().getPerformanceThread().isAlive() && !Engine.getEngine().getPerformanceMonitor().shouldStop)
+                	Engine.getEngine().getPerformanceThread().start();
             }
         });
 	}
 	
 	public void setupMouseCallbacks()
 	{
-		glfwSetCursorPosCallback(Game.getGame().getDisplay().getWindowHandler(), mousePosCallback = new GLFWCursorPosCallback()
+		glfwSetCursorPosCallback(Engine.getEngine().getDisplay().getWindowHandler(), mousePosCallback = new GLFWCursorPosCallback()
 		{
 			@Override
 			public void invoke(long window, double xpos, double ypos) {
@@ -134,7 +134,7 @@ public class InputManager implements Runnable{
 				}
 			}
 		});
-		glfwSetMouseButtonCallback(Game.getGame().getDisplay().getWindowHandler(), mouseButtonCallback = new GLFWMouseButtonCallback()
+		glfwSetMouseButtonCallback(Engine.getEngine().getDisplay().getWindowHandler(), mouseButtonCallback = new GLFWMouseButtonCallback()
 		{
 			@Override
 			public void invoke(long window, int button, int action, int mods) {

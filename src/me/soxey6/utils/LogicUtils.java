@@ -1,10 +1,9 @@
 package me.soxey6.utils;
 
-import org.lwjgl.util.vector.Vector2f;
 
 
 public class LogicUtils {
-	public static Vector2f calculateDirectionOffset(int x, int y, int offset, int direction)
+	/*public static Vector2f calculateDirectionOffset(int x, int y, int offset, int direction)
 	{
 		Vector2f toReturn=new Vector2f(0,0);
 		if(direction==0)
@@ -43,7 +42,7 @@ public class LogicUtils {
 			toReturn = new Vector2f(x-offset, y);
 		}
 		return toReturn;		
-	}
+	}*/
 	
 	public static int unNormalize(float v, float mv)
 	{

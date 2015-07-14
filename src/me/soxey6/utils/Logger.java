@@ -2,7 +2,7 @@ package me.soxey6.utils;
 
 import java.io.IOException;
 
-import me.soxey6.engine.main.Game;
+import me.soxey6.engine.main.Engine;
 import me.soxey6.engine.managers.file.FileManager;
 
 /**
@@ -66,7 +66,7 @@ public class Logger
 		}
 		stringToPrint+=object.toString();
 		try {
-			FileManager.getFileManager().appendFile(Game.getGame().getGameName()+".log", stringToPrint+"\n");
+			FileManager.getFileManager().appendFile(Engine.getEngine().getGameName()+".log", stringToPrint+"\n");
 		} catch (IOException e) {
 			e.printStackTrace();
 		}

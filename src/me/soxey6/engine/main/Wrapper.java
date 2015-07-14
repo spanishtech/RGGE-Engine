@@ -16,7 +16,7 @@ import me.soxey6.utils.RenderingUtils;
  */
 public class Wrapper{
 	// All the classes we need.
-	private Game game;
+	private Engine game;
 	private EventManager eventManager;
 	private SceneManager sceneManager;
 	private FileManager fileManager;
@@ -31,7 +31,7 @@ public class Wrapper{
 	public Wrapper()
 	{
 		// Make sure none of the variables are null when created.
-		this.game=Game.getGame();
+		this.game=Engine.getEngine();
 		this.eventManager = EventManager.getEventManager();
 		this.sceneManager = SceneManager.getSceneManager();
 		this.fileManager  = FileManager.getFileManager();
@@ -112,11 +112,11 @@ public class Wrapper{
 		this.logger = logger;
 	}
 
-	public Game getGame() {
+	public Engine getGame() {
 		return game;
 	}
 
-	public void setGame(Game game) {
+	public void setGame(Engine game) {
 		this.game = game;
 	}
 

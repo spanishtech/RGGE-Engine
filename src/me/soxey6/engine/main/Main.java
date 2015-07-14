@@ -1,5 +1,7 @@
 package me.soxey6.engine.main;
 
+import java.io.File;
+
 
 /**
  * The entry point of the game that then sets up the game object making almost everything non-static.
@@ -8,21 +10,20 @@ package me.soxey6.engine.main;
  */
 public class Main
 {
-	private static Game game;
+	private static Engine game;
 	private final static String gameName = "";
 	
 	private static Repairer repairer;
 	public static void main(String[] args)
 	{
-		if(args.length>0&&args[0].equalsIgnoreCase("repair"))
-				repair();
-		setGame(new Game(gameName));
+		System.setProperty("org.lwjgl.librarypath", new File("native/").getAbsolutePath());
+		setGame(new Engine(gameName));
 
 	}
-	public static Game getGame() {
+	public static Engine getGame() {
 		return game;
 	}
-	public static void setGame(Game game) {
+	public static void setGame(Engine game) {
 		Main.game = game;
 	}
 	

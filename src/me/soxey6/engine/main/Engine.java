@@ -1,26 +1,51 @@
+/*
+ *  Game.java	0.1		7/13/15
+ * 
+ *  This file is part of RGGE-Engine.
+ *
+ *  RGGE-Engine is free software: you can redistribute it and/or modify
+ *  it under the terms of the GNU General Public License as published by
+ *  the Free Software Foundation, either version 3 of the License, or
+ *  any later version.
+ *
+ *  RGGE-Engine is distributed in the hope that it will be useful,
+ *  but WITHOUT ANY WARRANTY; without even the implied warranty of
+ *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ *  GNU General Public License for more details.
+ *
+ *  You should have received a copy of the GNU General Public License
+ *  along with RGGE-Engine.  If not, see <http://www.gnu.org/licenses/>.
+ */
+
 package me.soxey6.engine.main;
+import java.io.File;
+import java.net.URL;
+import java.net.URLClassLoader;
+
 import me.soxey6.engine.managers.event.EventManager;
 import me.soxey6.engine.managers.file.FileManager;
 import me.soxey6.engine.managers.input.InputManager;
+import me.soxey6.engine.managers.scene.Scene;
 import me.soxey6.engine.managers.scene.SceneManager;
 import me.soxey6.engine.managers.sound.SoundManager;
 import me.soxey6.engine.managers.time.TimeManager;
 import me.soxey6.engine.objects.render.Display;
-import me.soxey6.game.scenes.Splash;
 import me.soxey6.utils.Logger;
 import me.soxey6.utils.PerformanceMonitor;
 import me.soxey6.utils.RenderingUtils;
+
 /**
- * The game class is the entire game in a single class that can be created with an instance.
- * @author Pat Childs || Soxey6
- * @version Dev-0.0.2
+ * This is the main class of the engine. This is where all initialization occurs and where the engine splits of into multiple threads.
+ * This is the <i>Home</i> of the engine.
+ * @author 		Spanish
+ * @version		Dev-0.1
  */
-public class Game
+public class Engine
 {
 	private final boolean GLOBAL_LIMIT_LOGIC = false;
 	private final long GLOBAL_LOGIC_INCREMENT_MS = 100;
 	private final boolean SHOW_SPLASH = true;
-	private final int SPLASH_LENGTH_MS = 5000;
+	private final int SPLASH_LENGTH_MS = 1000;
 	
 	private String gameName;
 	
@@ -36,9 +61,9 @@ public class Game
 	private TimeManager timer;
 	private Thread timerThread;
 	
-	public boolean closeRequested = false;
+	private boolean closeRequested = false;
 	
-	private static Game game;
+	private static Engine engine;
 	private EventManager eventManager;
 	private SceneManager sceneManager;
 	private FileManager fileHandler;
@@ -46,15 +71,18 @@ public class Game
 	private Logger logger;
 	private RenderingUtils renderingUtils;
 	private Settings settings;
-		/**
-	 * The game object is the whole game itself. Creating a new one will create a new game.
+	
+	/**
+	 * This is the constructor for the game. Creating new instances of this will create new instances of then game.
 	 * Note: This can have numerous instances at once.
-	 * @param String gameName
+	 * @param gameName The name of the game
 	 */
-	public Game(String gameName)
-	{
-		game=this;
+	public Engine(String gameName){
+		// Sets the properities of this class
+		engine=this;
+		this.gameName=gameName;
 		
+		// Start creating instances of things
 		this.logger = new Logger();
 		this.eventManager = new EventManager();
 		getLogger().log(getLogger().INFO, "Respawned");
@@ -76,12 +104,7 @@ public class Game
 		getLogger().log(getLogger().DEBUG, "Creating Timer Instance");
 		this.timerThread = new Thread(timer = new TimeManager());
 		timerThread.start();
-		
-		// Sets the game name from the constructor
-		this.gameName=gameName;
-		
-		// Creates an instance of the error handler class and sets it for later use.
-		
+				
 		// Initializes the display and openGL
 		initDisplay();
 		
@@ -92,11 +115,11 @@ public class Game
 		// Engine splash
 		if(SHOW_SPLASH)
 			// Magikarp use
-			splash();
+			splash(); // hehehehe
 		
 		//Creates the objects to be used in the game.
 		initGame();
-		initSettings();
+		
 		//Starts the game loop
 		getLogger().log(getLogger().DEBUG, "Starting game loop");
 		gameLoop();
@@ -105,43 +128,18 @@ public class Game
 		// When game loop exits, it cleans up everything.
 		cleanUp();
 	}
-
-	public void threadCleanup()
-	{
-		this.closeRequested=true;
-		this.performanceMonitor.shouldStop = true;
-		this.inputManager.shouldStop = true;
-		this.timer.shouldStop = true;
-		getLogger().log(getLogger().INFO, "RIP");
-	}
 	
-	/**
-	 * Cleans up by <b>destroying</b> the window and OpenGL setup
-	 * @return Void
-	 * @param None
-	 */
-	private void cleanUp()
-	{
+	private void cleanUp(){
 		getLogger().log(getLogger().INFO, "Cleaning up");
-		try {
-			display.destroy();
-		} catch (Throwable e) {
-			e.printStackTrace();
-		}
 		System.exit(0);
 	}
 
-	/**
-	 * All the game logic, rendering and input is processed here.
-	 * This will continue to loop until the window is 
-	 */
-	private int gameLoop()
-	{
+	private int gameLoop(){
 		// Loops while the window has not attempted to be requested.
 		while(!closeRequested)
 		{
 			try {
-				Thread.sleep(100);
+				Thread.sleep(1000);
 			} catch (InterruptedException e) {
 				e.printStackTrace();
 			}
@@ -149,32 +147,27 @@ public class Game
 		return 0;
 	}
 	
-	/**
-	 * This will render the engine splash, because #YOLO
-	 */
 	private void splash() {
 		
 	}
 	
-	/**
-	 * This is where the game initializes (After setting up rendering)
-	 * All code that needs to be run at the beginning and only once should be put here.
-	 */
-	private void initGame()
-	{
+	private void initGame(){
 		getLogger().log(getLogger().DEBUG, display.getWindowHandler());//"Creating Input Manager Instance");
 		inputThread = new Thread(inputManager = new InputManager());
 		inputThread.start();
 		getLogger().log(getLogger().DEBUG, "Initializing Game");
-		new Splash();
-		getSceneManager().switchScene("SPLASH");
+		try {
+			URLClassLoader classLoader = URLClassLoader.newInstance(new URL[] { new File("ping2.jar").toURI().toURL() });
+			Class<?> clazz = classLoader.loadClass("com.test.thing.Splash");
+			Scene scene = (Scene) clazz.newInstance();
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+
 	}
 
-	/**
-	 * This is where the display is initialized.
-	 */
-	private void initDisplay()
-	{
+	private void initDisplay(){
 		getLogger().log(getLogger().DEBUG, "Initializing Display");
 		// This create a new window called whatever is passed through the constructor of this object.
 		renderThread = new Thread((display = new Display(this.gameName, false)));
@@ -183,36 +176,18 @@ public class Game
 		getLogger().log(getLogger().DEBUG, "Setting up OpenGL instance");
 	}
 
-	/**
-	 * This function initializes basic settings
-	 */
-	public void initSettings()
-	{
-		getLogger().log(getLogger().DEBUG, "Setting up settings");
-		
-	}
-	
-	/**
-	 * This function when called will update the inputs.
-	 * @return Error values
-	 */
-	public int input()
-	{
-		inputManager.input();
-		return 0;
-	}
-	
-	/**
-	 * All logic code should be placed including calling logic() in objects. 
-	 * @return Error values
-	 */
-	public int logic()
-	{
-		// Simple, ey?
-		return 0;
-		
-	}
 
+	/**
+	 * Starts stopping all other threads, and starts the cleanup.
+	 */
+	public void threadCleanup(){
+		this.closeRequested=true;
+		this.performanceMonitor.shouldStop = true;
+		this.inputManager.shouldStop = true;
+		this.timer.shouldStop = true;
+		getLogger().log(getLogger().INFO, "RIP");
+	}
+	
 	public String getGameName() {
 		return gameName;
 	}
@@ -221,12 +196,12 @@ public class Game
 		this.gameName = gameName;
 	}
 
-	public static Game getGame() {
-		return game;
+	public static Engine getEngine() {
+		return engine;
 	}
 
-	public static void setGame(Game game) {
-		Game.game = game;
+	public static void setEngine(Engine engine) {
+		Engine.engine = engine;
 	}
 	
 	public SceneManager getSceneManager() {

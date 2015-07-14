@@ -7,7 +7,7 @@ import java.util.Timer;
 import java.util.TimerTask;
 
 import me.soxey6.engine.events.ticks.timer.TimerEvent;
-import me.soxey6.engine.main.Game;
+import me.soxey6.engine.main.Engine;
 import me.soxey6.engine.managers.event.EventListener;
 import me.soxey6.engine.managers.event.EventManager;
 import me.soxey6.utils.Logger;
@@ -39,7 +39,7 @@ public class TimeManager implements Runnable
 				@Override
 	            public void run() {
 	                EventManager.getEventManager().dispatch(new TimerEvent(time.getInterval()));
-	                Game.getGame().getPerformanceMonitor().tps++;
+	                Engine.getEngine().getPerformanceMonitor().tps++;
 	            }
 			}, 0, time.getInterval());
 		}

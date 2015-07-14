@@ -1,6 +1,6 @@
 package me.soxey6.engine.managers.scene;
 
-import me.soxey6.engine.main.Game;
+import me.soxey6.engine.main.Engine;
 import me.soxey6.engine.main.Wrapper;
 import me.soxey6.engine.managers.event.EventHandler;
 import me.soxey6.engine.objects.gui.Gui;
@@ -24,7 +24,7 @@ public class Scene extends Wrapper{
 	private String title;
 	private boolean focused;
 
-	private Game game;
+	private Engine game;
 	private Gui	gui;
 
 	private long lastLogicTime;
@@ -34,7 +34,7 @@ public class Scene extends Wrapper{
 		// Setup variables
 		this.name=name;
 		this.title=name;
-		this.game=Game.getGame();
+		this.game=Engine.getEngine();
 				
 		this.gui = new Gui(this);
 		this.getSceneManager().addScene(this);
@@ -73,11 +73,11 @@ public class Scene extends Wrapper{
 		this.focused = focused;
 	}
 
-	public Game getGame() {
+	public Engine getGame() {
 		return game;
 	}
 
-	public void setGame(Game game) {
+	public void setGame(Engine game) {
 		this.game = game;
 	}
 

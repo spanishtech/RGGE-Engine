@@ -28,7 +28,7 @@ import static org.lwjgl.system.MemoryUtil.NULL;
 import java.nio.ByteBuffer;
 
 import me.soxey6.engine.events.ticks.render.RenderEvent;
-import me.soxey6.engine.main.Game;
+import me.soxey6.engine.main.Engine;
 import me.soxey6.engine.main.Settings;
 import me.soxey6.engine.managers.event.EventManager;
 import me.soxey6.engine.objects.Setting;
@@ -70,7 +70,7 @@ public class Display implements Runnable
 	
 	public void render()
 	{
-		Game.getGame().setDisplay(this);
+		Engine.getEngine().setDisplay(this);
 		// Initialize GLFW. Most GLFW functions will not work before doing this.
         if ( glfwInit() != GL11.GL_TRUE )
             throw new IllegalStateException("Unable to initialize GLFW");
@@ -128,12 +128,12 @@ public class Display implements Runnable
 		while(glfwWindowShouldClose(windowHandler) == GL_FALSE && !shouldStop)
 		{
 			preRender();
-			Game.getGame().getPerformanceMonitor().fps++;
+			Engine.getEngine().getPerformanceMonitor().fps++;
 			EventManager.getEventManager().dispatch(new RenderEvent());
 			postRender();
-			Game.getGame().getPerformanceMonitor().ips++;
+			Engine.getEngine().getPerformanceMonitor().ips++;
 		}
-		Game.getGame().threadCleanup();
+		Engine.getEngine().threadCleanup();
 	}
 	
 	public void stop()

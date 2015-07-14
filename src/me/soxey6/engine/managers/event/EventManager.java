@@ -5,7 +5,7 @@ import java.util.HashMap;
 
 import me.soxey6.engine.events.ticks.render.RenderEvent;
 import me.soxey6.engine.events.ticks.timer.TimerEvent;
-import me.soxey6.engine.main.Game;
+import me.soxey6.engine.main.Engine;
 
 /**
  * This class is used for dispatching, hooking and managing events.
@@ -35,7 +35,7 @@ public class EventManager {
 		if(eventListeners.containsKey(event.getClass())){
 			for(int i = 0; i<eventListeners.get(event.getClass()).size(); i++)
 			{
-				Game.getGame().getPerformanceMonitor().eps++;
+				Engine.getEngine().getPerformanceMonitor().eps++;
 				if(eventListeners.get(event.getClass()).get(i)!=null)
 					if(needCurrentThread(event))
 					{

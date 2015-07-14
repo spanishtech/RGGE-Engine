@@ -1,5 +1,5 @@
 /*
- *  MouseMoveEvent.java	1.1		7/12/15
+ *  MouseMoveEvent.java	1.0		7/13/15
  * 
  *  This file is part of RGGE-Engine.
  *
@@ -21,33 +21,63 @@ package me.soxey6.engine.events.input.mouse.move;
 
 import me.soxey6.engine.managers.event.Event;
 
+/**
+ * MouseMoveEvent is a class used for sorting, filtering and dispatching events.
+ * The event is created with the needed information about that event added to it before being sent through the event system and dispatched to every listener that this fits the filter of.
+ * 
+ * @version		1.0
+ * @author 		Spanish Tech
+ * @see			Event
+ */
+
 public class MouseMoveEvent extends Event{
 
 	private float x;
 	private float y;
 	
-	public MouseMoveEvent( float x, float y)
-	{
-
-		
+	/**
+	 * Constructs a MouseMoveEvent object with the required information
+	 * @param x The X position of the event
+	 * @param y The Y position of the event
+	 */
+	public MouseMoveEvent( float x, float y){
 		this.x = x;
 		this.y = y;
 	}
 
+	/**
+	 * Returns the X position of the event
+	 * 
+	 * @return the X position of the event
+	 */
 	public float getX() {
 		return x;
 	}
 
+	/**
+	 * Sets the X position of the event
+	 * 
+	 * @param x the X position to set
+	 */
 	public void setX(float x) {
 		this.x = x;
 	}
 
+	/**
+	 * Returns the Y position of the event
+	 * 
+	 * @return the Y position of the event
+	 */
 	public float getY() {
 		return y;
 	}
 
+	/**
+	 * Sets the Y position of the event
+	 * 
+	 * @param y the Y position to set
+	 */
 	public void setY(float y) {
 		this.y = y;
 	}
-
 }
