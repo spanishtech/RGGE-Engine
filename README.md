@@ -2,22 +2,20 @@
 
 RGGE is a 2d java game engine using LWJGL3
 
-To use simply create a project with LWJGL3 and LWJGL2_utils as libraries and copy the source into your project.
+To use RGGE please download the dependencies from [Here](http://spanishtech.github.io/RGGE-Engine/dep/ "Dependencies")
+After downloading them add them to a projects class path.
 
-To use this engine there are a few basic concepts you need to know.
-##Scenes
-Scenes are how code is seperated. Simply create a scene and in Game.java and the function initGame(), put the line
-
-`getSceneManager().switchScene("{{Name given to your scene}}");`
-
-##Event management
-To register an event you need to do the following. Implement the specific event handler. For Key events it's KeyHandler.
-After implementing you need to write the line
-
-`getEventManager().addListener(new KeyListener(this, new KeyEvent(new Key(0,0))));`
-Notice: You can add a true to any Listener constructor to enable strict filtering. This means an event will only be sent if it matches the filter EXACTLY.
-
-There is a lack of a overall game-object for now but you can create one if you want.
+From here creating a game is simple, but you must know some basic ideas first.
+#####Debugging
+While you are debugging you must create a new instance of the engine. Basically you are calling the engine. This means you need to create a new Main function that creates a new Engine instance but with an extra boolean in the constructor (This boolean tells the engine you're in debugging mode and it will not act as a release). The Main function you created will only be used while debugging and when it is released will never be touched again
+#####Release
+Upon releasing you need not do anything to your Main function as it will be ignored. During the release the engine will call your Game class. This means that you will be loaded in when the engine is ready. Keep in mind that load order of jars is important as Mods act in the same ways games work.
+#####Creating your game
+Now all you need to do is create a new Main function (Entry point) and call a new engine with the boolean true in the constructor (To notify the engine it's being run in debug mode). Similar to:
+`Engine engine = new Engine("My cool game name", true);`
+after that you will want to create a new Subclass of the Game class. Then go back into the main function and add a new line
+`engine.loadGame(new MyGameSubClass());`
+now your game is running. Simply put all your logic in the constructor of the MyGameSubClass class. From there you can create scenes, focus scenes and various other things this engine can handle
 
 ##Documentation
 [Link](http://spanishtech.github.io/RGGE-Engine/ "Documentation")
