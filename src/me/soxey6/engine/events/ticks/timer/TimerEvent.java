@@ -22,24 +22,26 @@ package me.soxey6.engine.events.ticks.timer;
 import me.soxey6.engine.managers.event.Event;
 
 /**
- * TimerEvent is a class used for sorting, filtering and dispatching events.
- * The event is created with the needed information about that event added to it before being sent through the event system and dispatched to every listener that this fits the filter of.
+ * TimerEvent is a class used for sorting, filtering and dispatching events. The
+ * event is created with the needed information about that event added to it
+ * before being sent through the event system and dispatched to every listener
+ * that this fits the filter of.
  * 
- * @version		1.0
- * @author 		Spanish Tech
- * @see			Event
+ * @version 1.0
+ * @author Spanish Tech
+ * @see Event
  */
-public class TimerEvent extends Event{
-	
-	
+public class TimerEvent extends Event<TimerEvent> {
+
 	private long interval;
-	
+
 	/**
 	 * Constructs a TimerEvent object with the required information
-	 * @param interval The interval in MS of this event
+	 * 
+	 * @param interval
+	 *            The interval in MS of this event
 	 */
-	public TimerEvent( long interval )
-	{
+	public TimerEvent(long interval) {
 		this.interval = interval;
 	}
 
@@ -55,9 +57,20 @@ public class TimerEvent extends Event{
 	/**
 	 * Sets the interval of the event
 	 * 
-	 * @param interval the interval to set
+	 * @param interval
+	 *            the interval to set
 	 */
 	public void setInterval(long interval) {
 		this.interval = interval;
+	}
+	
+	/**
+	 * Returns weather the supplied event has the same properties as this
+	 * @param event An event to match.
+	 * @return weather the supplied event has the same properties as this
+	 */
+	public boolean matches(TimerEvent event)
+	{
+		return (event.getInterval() == getInterval()||event.getInterval()==0);
 	}
 }

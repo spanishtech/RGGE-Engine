@@ -10,11 +10,14 @@ import me.soxey6.utils.Logger;
 import me.soxey6.utils.RenderingUtils;
 
 /**
- * This wrapper is used for calling other classes that are semi-static. Managers and such. This should be extended to most classes in the game as it allows access to them easily.
+ * This wrapper is used for calling other classes that are semi-static. Managers
+ * and such. This should be extended to most classes in the game as it allows
+ * access to them easily.
+ * 
  * @author pchilds
  *
  */
-public class Wrapper{
+public class Wrapper extends Globals{
 	// All the classes we need.
 	private Engine game;
 	private EventManager eventManager;
@@ -27,14 +30,13 @@ public class Wrapper{
 	private TimeManager timer;
 	private Logger logger;
 	private Settings settings;
-	
-	public Wrapper()
-	{
+
+	public Wrapper() {
 		// Make sure none of the variables are null when created.
-		this.game=Engine.getEngine();
+		this.game = Engine.getEngine();
 		this.eventManager = EventManager.getEventManager();
 		this.sceneManager = SceneManager.getSceneManager();
-		this.fileManager  = FileManager.getFileManager();
+		this.fileManager = FileManager.getFileManager();
 		this.inputManager = InputManager.getInputManager();
 		this.soundManager = SoundManager.getSoundManager();
 		this.renderingUtils = RenderingUtils.getRenderingUtils();
@@ -43,7 +45,6 @@ public class Wrapper{
 		this.settings = Settings.getSettings();
 	}
 
-	
 	public EventManager getEventManager() {
 		return eventManager;
 	}
@@ -64,7 +65,6 @@ public class Wrapper{
 		return inputManager;
 	}
 
-
 	public void setInputManager(InputManager inputManager) {
 		this.inputManager = inputManager;
 	}
@@ -72,7 +72,6 @@ public class Wrapper{
 	public SoundManager getSoundManager() {
 		return soundManager;
 	}
-
 
 	public void setSoundManager(SoundManager soundManager) {
 		this.soundManager = soundManager;
@@ -89,20 +88,17 @@ public class Wrapper{
 	/**
 	 * @return the timer
 	 */
-	public TimeManager getTimer()
-	{
+	public TimeManager getTimer() {
 		return timer;
 	}
 
-
 	/**
-	 * @param timer the timer to set
+	 * @param timer
+	 *            the timer to set
 	 */
-	public void setTimer(TimeManager timer)
-	{
+	public void setTimer(TimeManager timer) {
 		this.timer = timer;
 	}
-
 
 	public Logger getLogger() {
 		return logger;
@@ -128,14 +124,14 @@ public class Wrapper{
 		this.settings = settings;
 	}
 
-
 	public FileManager getFileManager() {
 		return fileManager;
 	}
-
 
 	public void setFileManager(FileManager fileManager) {
 		this.fileManager = fileManager;
 	}
 
+	public void finalize() throws Throwable{
+	}
 }

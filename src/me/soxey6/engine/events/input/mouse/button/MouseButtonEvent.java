@@ -22,37 +22,43 @@ package me.soxey6.engine.events.input.mouse.button;
 import me.soxey6.engine.managers.event.Event;
 
 /**
- * MouseButtonEvent is a class used for sorting, filtering and dispatching events.
- * The event is created with the needed information about that event added to it before being sent through the event system and dispatched to every listener that this fits the filter of.
+ * MouseButtonEvent is a class used for sorting, filtering and dispatching
+ * events. The event is created with the needed information about that event
+ * added to it before being sent through the event system and dispatched to
+ * every listener that this fits the filter of.
  * 
- * @version		1.1
- * @author 		Spanish Tech
- * @see			Event
+ * @version 1.1
+ * @author Spanish Tech
+ * @see Event
  */
-public class MouseButtonEvent extends Event{
-	
-	
+public class MouseButtonEvent extends Event<MouseButtonEvent> {
+
 	private float x;
 	private float y;
-	
+
 	private int mouseButton;
-	
+
 	private int action;
-	
+
 	/**
 	 * Constructs a MouseButtonEvent object with the required information
-	 * @param x The X position of the event
-	 * @param y The Y position of the event
-	 * @param mouseButton The mouse button associated with this event
-	 * @param action The action of the button for this event
+	 * 
+	 * @param x
+	 *            The X position of the event
+	 * @param y
+	 *            The Y position of the event
+	 * @param mouseButton
+	 *            The mouse button associated with this event
+	 * @param action
+	 *            The action of the button for this event
 	 */
-	public MouseButtonEvent( float x, float y, int mouseButton, int action ){
-		this.x				= x;
-		this.y				= y;
-		this.mouseButton	= mouseButton;
-		this.action 		= action;
+	public MouseButtonEvent(float x, float y, int mouseButton, int action) {
+		this.x = x;
+		this.y = y;
+		this.mouseButton = mouseButton;
+		this.action = action;
 	}
-	
+
 	/**
 	 * Returns the X position of the event
 	 * 
@@ -65,7 +71,8 @@ public class MouseButtonEvent extends Event{
 	/**
 	 * Sets the X position of the event
 	 * 
-	 * @param x the X position to set
+	 * @param x
+	 *            the X position to set
 	 */
 	public void setX(float x) {
 		this.x = x;
@@ -83,7 +90,8 @@ public class MouseButtonEvent extends Event{
 	/**
 	 * Sets the Y position of the event
 	 * 
-	 * @param y the Y position to set
+	 * @param y
+	 *            the Y position to set
 	 */
 	public void setY(float y) {
 		this.y = y;
@@ -101,7 +109,8 @@ public class MouseButtonEvent extends Event{
 	/**
 	 * Sets the button involved in this event
 	 * 
-	 * @param mouseButton The button involved in this event
+	 * @param mouseButton
+	 *            The button involved in this event
 	 */
 	public void setMouseButton(int mouseButton) {
 		this.mouseButton = mouseButton;
@@ -116,15 +125,24 @@ public class MouseButtonEvent extends Event{
 		return action;
 	}
 
-
 	/**
 	 * Sets the action involved in this event
 	 * 
-	 * @param action The action involved in this event
+	 * @param action
+	 *            The action involved in this event
 	 */
 	public void setAction(int action) {
 		this.action = action;
 	}
 
-
+	/**
+	 * Returns weather the supplied event has the same properties as this
+	 * 
+	 * @param event
+	 *            An event to match.
+	 * @return weather the supplied event has the same properties as this
+	 */
+	public boolean matches(MouseButtonEvent event) {
+		return (event.getAction() == getAction() && event.getMouseButton()==getMouseButton());
+	}
 }

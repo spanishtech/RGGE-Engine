@@ -2,35 +2,31 @@ package me.soxey6.engine.main;
 
 import java.util.ArrayList;
 
-
 import me.soxey6.engine.objects.Setting;
+
 @SuppressWarnings("rawtypes")
 public class Repairer {
 	private boolean successfulRepairBefore;
-	
+
 	private boolean successful;
-	
+
 	private ArrayList<Setting> defaultSettings;
-	
-	public Repairer()
-	{
-		//TODO: add default settings to the array
-		//TODO: Setup values
+
+	public Repairer() {
+		// TODO: add default settings to the array
+		// TODO: Setup values
 	}
-	
-	public void startRepairs()
-	{
-		//TODO: Start repairing
+
+	public void startRepairs() {
+		// TODO: Start repairing
 	}
-	
-	public void markSuccessful()
-	{
-		//TODO: Mark successful
+
+	public void markSuccessful() {
+		// TODO: Mark successful
 	}
-	
-	public void dump()
-	{
-		//TODO: Produce a report on why it is dying.
+
+	public void dump() {
+		// TODO: Produce a report on why it is dying.
 	}
 
 	public boolean isSuccessfulRepairBefore() {

@@ -23,18 +23,20 @@ import me.soxey6.engine.managers.event.Event;
 
 /**
  * RenderEvent is a class used for sorting, filtering and dispatching events.
- * The event is created with the needed information about that event added to it before being sent through the event system and dispatched to every listener that this fits the filter of.
+ * The event is created with the needed information about that event added to it
+ * before being sent through the event system and dispatched to every listener
+ * that this fits the filter of.
  * 
- * @version		1.0
- * @author 		Spanish Tech
- * @see			Event
+ * @version 1.0
+ * @author Spanish Tech
+ * @see Event
  */
-public class RenderEvent extends Event{
-	
+public class RenderEvent extends Event<RenderEvent> {
+
 	/**
-	 * Constructs a RenderEvent object
-	 * NOTE: There is no data for this event.
+	 * Constructs a RenderEvent object NOTE: There is no data for this event.
 	 */
-	public RenderEvent(){}
-	
+	public RenderEvent() {
+	}
+
 }

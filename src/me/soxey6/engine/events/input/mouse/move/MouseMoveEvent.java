@@ -23,24 +23,29 @@ import me.soxey6.engine.managers.event.Event;
 
 /**
  * MouseMoveEvent is a class used for sorting, filtering and dispatching events.
- * The event is created with the needed information about that event added to it before being sent through the event system and dispatched to every listener that this fits the filter of.
+ * The event is created with the needed information about that event added to it
+ * before being sent through the event system and dispatched to every listener
+ * that this fits the filter of.
  * 
- * @version		1.0
- * @author 		Spanish Tech
- * @see			Event
+ * @version 1.0
+ * @author Spanish Tech
+ * @see Event
  */
 
-public class MouseMoveEvent extends Event{
+public class MouseMoveEvent extends Event<MouseMoveEvent> {
 
 	private float x;
 	private float y;
-	
+
 	/**
 	 * Constructs a MouseMoveEvent object with the required information
-	 * @param x The X position of the event
-	 * @param y The Y position of the event
+	 * 
+	 * @param x
+	 *            The X position of the event
+	 * @param y
+	 *            The Y position of the event
 	 */
-	public MouseMoveEvent( float x, float y){
+	public MouseMoveEvent(float x, float y) {
 		this.x = x;
 		this.y = y;
 	}
@@ -57,7 +62,8 @@ public class MouseMoveEvent extends Event{
 	/**
 	 * Sets the X position of the event
 	 * 
-	 * @param x the X position to set
+	 * @param x
+	 *            the X position to set
 	 */
 	public void setX(float x) {
 		this.x = x;
@@ -75,9 +81,21 @@ public class MouseMoveEvent extends Event{
 	/**
 	 * Sets the Y position of the event
 	 * 
-	 * @param y the Y position to set
+	 * @param y
+	 *            the Y position to set
 	 */
 	public void setY(float y) {
 		this.y = y;
+	}
+
+	/**
+	 * Returns weather the supplied event has the same properties as this
+	 * 
+	 * @param event
+	 *            An event to match.
+	 * @return weather the supplied event has the same properties as this
+	 */
+	public boolean matches(MouseMoveEvent event) {
+		return (event.getX() == getX() || event.getY() == getY());
 	}
 }

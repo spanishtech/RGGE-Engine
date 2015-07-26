@@ -22,24 +22,26 @@ package me.soxey6.engine.events.input.mouse.scroll;
 import me.soxey6.engine.managers.event.Event;
 
 /**
- * MouseScrollEvent is a class used for sorting, filtering and dispatching events.
- * The event is created with the needed information about that event added to it before being sent through the event system and dispatched to every listener that this fits the filter of.
+ * MouseScrollEvent is a class used for sorting, filtering and dispatching
+ * events. The event is created with the needed information about that event
+ * added to it before being sent through the event system and dispatched to
+ * every listener that this fits the filter of.
  * 
- * @version		1.0
- * @author 		Spanish Tech
- * @see			Event
+ * @version 1.0
+ * @author Spanish Tech
+ * @see Event
  */
-public class MouseScrollEvent extends Event{
-	
-	
+public class MouseScrollEvent extends Event<MouseScrollEvent> {
+
 	private int dScroll;
-	
+
 	/**
 	 * Constructs a MouseScrollEvent object with the required information
-	 * @param dScroll The delta scroll of the event
+	 * 
+	 * @param dScroll
+	 *            The delta scroll of the event
 	 */
-	public MouseScrollEvent( int dScroll )
-	{
+	public MouseScrollEvent(int dScroll) {
 		this.setdScroll(dScroll);
 	}
 
@@ -55,11 +57,21 @@ public class MouseScrollEvent extends Event{
 	/**
 	 * Sets the delta scroll of the event
 	 * 
-	 * @param dScroll the delta scroll to set
+	 * @param dScroll
+	 *            the delta scroll to set
 	 */
 	public void setdScroll(int dScroll) {
 		this.dScroll = dScroll;
 	}
 
-
+	/**
+	 * Returns weather the supplied event has the same properties as this
+	 * 
+	 * @param event
+	 *            An event to match.
+	 * @return weather the supplied event has the same properties as this
+	 */
+	public boolean matches(MouseScrollEvent event) {
+		return (event.getdScroll() == getdScroll() || event.getdScroll() == 0);
+	}
 }

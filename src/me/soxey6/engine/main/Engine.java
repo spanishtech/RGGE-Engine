@@ -18,14 +18,10 @@
  */
 
 package me.soxey6.engine.main;
-import java.io.File;
-import java.net.URL;
-import java.net.URLClassLoader;
 
 import me.soxey6.engine.managers.event.EventManager;
 import me.soxey6.engine.managers.file.FileManager;
 import me.soxey6.engine.managers.input.InputManager;
-import me.soxey6.engine.managers.scene.Scene;
 import me.soxey6.engine.managers.scene.SceneManager;
 import me.soxey6.engine.managers.sound.SoundManager;
 import me.soxey6.engine.managers.time.TimeManager;
@@ -35,34 +31,35 @@ import me.soxey6.utils.PerformanceMonitor;
 import me.soxey6.utils.RenderingUtils;
 
 /**
- * This is the main class of the engine. This is where all initialization occurs and where the engine splits of into multiple threads.
- * This is the <i>Home</i> of the engine.
- * @author 		Spanish
- * @version		Dev-0.1
+ * This is the main class of the engine. This is where all initialization occurs
+ * and where the engine splits of into multiple threads. This is the <i>Home</i>
+ * of the engine.
+ * 
+ * @author Spanish
+ * @version Dev-0.1
  */
-public class Engine
-{
+public class Engine {
 	private final boolean GLOBAL_LIMIT_LOGIC = false;
 	private final long GLOBAL_LOGIC_INCREMENT_MS = 100;
 	private final boolean SHOW_SPLASH = true;
 	private final int SPLASH_LENGTH_MS = 1000;
-	
+
 	private String gameName;
-	
+
 	private Display display;
 	private Thread renderThread;
-	
+
 	private InputManager inputManager;
 	private Thread inputThread;
-	
+
 	private PerformanceMonitor performanceMonitor;
 	private Thread performanceThread;
-	
+
 	private TimeManager timer;
 	private Thread timerThread;
-	
+
 	private boolean closeRequested = false;
-	
+
 	private static Engine engine;
 	private EventManager eventManager;
 	private SceneManager sceneManager;
@@ -71,73 +68,76 @@ public class Engine
 	private Logger logger;
 	private RenderingUtils renderingUtils;
 	private Settings settings;
-	
+
 	/**
-	 * This is the constructor for the game. Creating new instances of this will create new instances of then game.
-	 * Note: This can have numerous instances at once.
-	 * @param gameName The name of the game
+	 * This is the constructor for the game. Creating new instances of this will
+	 * create new instances of then game. Note: This can have numerous instances
+	 * at once.
+	 * 
+	 * @param gameName
+	 *            The name of the game
 	 */
-	public Engine(String gameName){
+	public Engine(String gameName) {
 		// Sets the properities of this class
-		engine=this;
-		this.gameName=gameName;
-		
+		engine = this;
+		this.gameName = gameName;
+
 		// Start creating instances of things
 		this.logger = new Logger();
 		this.eventManager = new EventManager();
 		getLogger().log(getLogger().INFO, "Respawned");
-		
+
 		getLogger().log(getLogger().DEBUG, "Creating file manager instance");
 		this.fileHandler = new FileManager();
-		
+
 		getLogger().log(getLogger().DEBUG, "Creating Scene manager instance");
-		this.sceneManager=new SceneManager();
-		
+		this.sceneManager = new SceneManager();
+
 		getLogger().log(getLogger().DEBUG, "Creating Settings instance");
 		this.settings = new Settings();
-		
+
 		getLogger().log(getLogger().DEBUG, "Creating Sound Manager Instance");
 		this.soundManager = new SoundManager();
-		
-		this.performanceThread = new Thread(performanceMonitor = new PerformanceMonitor());
-		
+
+		this.performanceThread = new Thread(
+				performanceMonitor = new PerformanceMonitor(), "Performance monitor");
+
 		getLogger().log(getLogger().DEBUG, "Creating Timer Instance");
-		this.timerThread = new Thread(timer = new TimeManager());
+		this.timerThread = new Thread(timer = new TimeManager(), "Time manager");
 		timerThread.start();
-				
+
 		// Initializes the display and openGL
 		initDisplay();
-		
+
 		// Done after avoid issues
 		getLogger().log(getLogger().DEBUG, "Creating Rendering utils instance");
 		this.renderingUtils = new RenderingUtils();
-		
+
 		// Engine splash
-		if(SHOW_SPLASH)
+		if (SHOW_SPLASH)
 			// Magikarp use
 			splash(); // hehehehe
-		
-		//Creates the objects to be used in the game.
+
+		// Creates the objects to be used in the game.
 		initGame();
-		
-		//Starts the game loop
+
+		// Starts the game loop
 		getLogger().log(getLogger().DEBUG, "Starting game loop");
 		gameLoop();
 		getLogger().log(getLogger().DEBUG, "Game loop left, cleanup started");
-		
+
 		// When game loop exits, it cleans up everything.
 		cleanUp();
 	}
-	
-	private void cleanUp(){
+
+	private void cleanUp() {
 		getLogger().log(getLogger().INFO, "Cleaning up");
 		System.exit(0);
 	}
 
-	private int gameLoop(){
+	private int gameLoop() {
 		// Loops while the window has not attempted to be requested.
-		while(!closeRequested)
-		{
+		while (!closeRequested) {
 			try {
 				Thread.sleep(1000);
 			} catch (InterruptedException e) {
@@ -146,48 +146,41 @@ public class Engine
 		}
 		return 0;
 	}
-	
+
 	private void splash() {
-		
+
 	}
-	
-	private void initGame(){
-		getLogger().log(getLogger().DEBUG, display.getWindowHandler());//"Creating Input Manager Instance");
-		inputThread = new Thread(inputManager = new InputManager());
+
+	private void initGame() {
+		getLogger().log(getLogger().DEBUG, display.getWindowHandler());// "Creating Input Manager Instance");
+		inputThread = new Thread(inputManager = new InputManager(), "Input manager");
 		inputThread.start();
-		getLogger().log(getLogger().DEBUG, "Initializing Game");
-		try {
-			URLClassLoader classLoader = URLClassLoader.newInstance(new URL[] { new File("ping2.jar").toURI().toURL() });
-			Class<?> clazz = classLoader.loadClass("com.test.thing.Splash");
-			Scene scene = (Scene) clazz.newInstance();
-		} catch (Exception e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
+		new Splash();
+		getSceneManager().switchScene("SPLASH");
 
 	}
 
-	private void initDisplay(){
+	private void initDisplay() {
 		getLogger().log(getLogger().DEBUG, "Initializing Display");
-		// This create a new window called whatever is passed through the constructor of this object.
-		renderThread = new Thread((display = new Display(this.gameName, false)));
+		// This create a new window called whatever is passed through the
+		// constructor of this object.
+		renderThread = new Thread((display = new Display(this.gameName, false)),"Render thread");
 		renderThread.start();
 		// Setup openGL
 		getLogger().log(getLogger().DEBUG, "Setting up OpenGL instance");
 	}
 
-
 	/**
 	 * Starts stopping all other threads, and starts the cleanup.
 	 */
-	public void threadCleanup(){
-		this.closeRequested=true;
+	public void threadCleanup() {
+		this.closeRequested = true;
 		this.performanceMonitor.shouldStop = true;
 		this.inputManager.shouldStop = true;
 		this.timer.shouldStop = true;
 		getLogger().log(getLogger().INFO, "RIP");
 	}
-	
+
 	public String getGameName() {
 		return gameName;
 	}
@@ -203,7 +196,7 @@ public class Engine
 	public static void setEngine(Engine engine) {
 		Engine.engine = engine;
 	}
-	
+
 	public SceneManager getSceneManager() {
 		return sceneManager;
 	}
@@ -223,32 +216,30 @@ public class Engine
 	/**
 	 * @return the soundManager
 	 */
-	public SoundManager getSoundManager()
-	{
+	public SoundManager getSoundManager() {
 		return soundManager;
 	}
 
 	/**
-	 * @param soundManager the soundManager to set
+	 * @param soundManager
+	 *            the soundManager to set
 	 */
-	public void setSoundManager(SoundManager soundManager)
-	{
+	public void setSoundManager(SoundManager soundManager) {
 		this.soundManager = soundManager;
 	}
 
 	/**
 	 * @return the timer
 	 */
-	public TimeManager getTimer()
-	{
+	public TimeManager getTimer() {
 		return timer;
 	}
 
 	/**
-	 * @param timer the timer to set
+	 * @param timer
+	 *            the timer to set
 	 */
-	public void setTimer(TimeManager timer)
-	{
+	public void setTimer(TimeManager timer) {
 		this.timer = timer;
 	}
 
@@ -295,16 +286,15 @@ public class Engine
 	/**
 	 * @return the eventManager
 	 */
-	public EventManager getEventManager()
-	{
+	public EventManager getEventManager() {
 		return eventManager;
 	}
 
 	/**
-	 * @param eventManager the eventManager to set
+	 * @param eventManager
+	 *            the eventManager to set
 	 */
-	public void setEventManager(EventManager eventManager)
-	{
+	public void setEventManager(EventManager eventManager) {
 		this.eventManager = eventManager;
 	}
 
@@ -363,6 +353,5 @@ public class Engine
 	public void setTimerThread(Thread timerThread) {
 		this.timerThread = timerThread;
 	}
-	
-	
+
 }

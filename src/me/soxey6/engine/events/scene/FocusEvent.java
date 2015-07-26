@@ -17,72 +17,60 @@
  *  along with RGGE-Engine.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package me.soxey6.engine.events.input.key;
+package me.soxey6.engine.events.scene;
 
 import me.soxey6.engine.managers.event.Event;
-import me.soxey6.engine.managers.input.Key;
+import me.soxey6.engine.managers.scene.Scene;
 
 /**
- * KeyEvent is a class used for sorting, filtering and dispatching events. The
+ * FocusEvent is a class used for sorting, filtering and dispatching events. The
  * event is created with the needed information about that event added to it
  * before being sent through the event system and dispatched to every listener
  * that this fits the filter of.
  * 
- * @version 1.2
+ * @version 1.0
  * @author Spanish Tech
  * @see Event
  */
-
-public class KeyEvent extends Event<KeyEvent> {
-
-	/**
-	 * key The current key of the event with such information as what key and
-	 * whether it's released or pressed.
-	 * 
-	 * @see Key
-	 */
-	private Key key;
+public class FocusEvent extends Event<FocusEvent> {
+	/** Weather the scene is being focused or unfocused. */
+	private boolean focused;
 
 	/**
-	 * The constructor of the KeyEvent class.
+	 * The scene that is involved in this event
 	 * 
-	 * @param key
-	 *            The information about the key that will be dispatched
-	 * @See Key
+	 * @see Scene
 	 */
-	public KeyEvent(Key key) {
-		this.key = key;
+	private Scene scene;
+
+	public FocusEvent(Scene scene, boolean focused) {
+		this.focused = focused;
+		this.scene = scene;
 	}
 
-	/**
-	 * GetKey() is used to retrieving the key information of this event.
-	 * 
-	 * @return key The key information of this event
-	 * @see Key
-	 */
-	public Key getKey() {
-		return key;
+	public boolean isFocused() {
+		return focused;
 	}
 
-	/**
-	 * GetKey() is used to set the key information of this event
-	 * 
-	 * @param key
-	 *            The key information of this event
-	 * @see Key
-	 */
-	public void setKey(Key key) {
-		this.key = key;
+	public void setFocused(boolean focused) {
+		this.focused = focused;
+	}
+
+	public Scene getScene() {
+		return scene;
+	}
+
+	public void setScene(Scene scene) {
+		this.scene = scene;
 	}
 	
 	/**
 	 * Returns weather the supplied event has the same properties as this
-	 * 
-	 * @param event
-	 *            An event to match.
+	 * @param event An event to match.
 	 * @return weather the supplied event has the same properties as this
 	 */
-	public boolean matches(KeyEvent event) {
-		return (event.getKey() == getKey() || event.getKey() == null);
+	public boolean matches(FocusEvent event)
+	{
+		return (event.isFocused() == isFocused()&&(event.getScene() == getScene()||event.getScene()==null));
 	}
 }
