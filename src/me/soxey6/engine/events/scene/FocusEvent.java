@@ -19,7 +19,7 @@
 
 package me.soxey6.engine.events.scene;
 
-import me.soxey6.engine.managers.event.Event;
+import me.soxey6.engine.managers.event.objects.Event;
 import me.soxey6.engine.managers.scene.Scene;
 
 /**
@@ -32,7 +32,7 @@ import me.soxey6.engine.managers.scene.Scene;
  * @author Spanish Tech
  * @see Event
  */
-public class FocusEvent extends Event<FocusEvent> {
+public class FocusEvent extends Event {
 	/** Weather the scene is being focused or unfocused. */
 	private boolean focused;
 

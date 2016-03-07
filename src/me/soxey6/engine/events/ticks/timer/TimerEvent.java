@@ -19,7 +19,7 @@
 
 package me.soxey6.engine.events.ticks.timer;
 
-import me.soxey6.engine.managers.event.Event;
+import me.soxey6.engine.managers.event.objects.Event;
 
 /**
  * TimerEvent is a class used for sorting, filtering and dispatching events. The
@@ -31,7 +31,7 @@ import me.soxey6.engine.managers.event.Event;
  * @author Spanish Tech
  * @see Event
  */
-public class TimerEvent extends Event<TimerEvent> {
+public class TimerEvent extends Event {
 
 	private long interval;
 

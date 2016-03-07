@@ -19,7 +19,7 @@
 
 package me.soxey6.engine.events.input.mouse.move;
 
-import me.soxey6.engine.managers.event.Event;
+import me.soxey6.engine.managers.event.objects.Event;
 
 /**
  * MouseMoveEvent is a class used for sorting, filtering and dispatching events.
@@ -32,7 +32,7 @@ import me.soxey6.engine.managers.event.Event;
  * @see Event
  */
 
-public class MouseMoveEvent extends Event<MouseMoveEvent> {
+public class MouseMoveEvent extends Event {
 
 	private float x;
 	private float y;

@@ -19,7 +19,7 @@
 
 package me.soxey6.engine.events.input.key;
 
-import me.soxey6.engine.managers.event.Event;
+import me.soxey6.engine.managers.event.objects.Event;
 import me.soxey6.engine.managers.input.Key;
 
 /**
@@ -33,7 +33,7 @@ import me.soxey6.engine.managers.input.Key;
  * @see Event
  */
 
-public class KeyEvent extends Event<KeyEvent> {
+public class KeyEvent extends Event {
 
 	/**
 	 * key The current key of the event with such information as what key and

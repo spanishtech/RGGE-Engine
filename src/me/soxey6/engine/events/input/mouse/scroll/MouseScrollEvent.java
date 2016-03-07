@@ -19,7 +19,7 @@
 
 package me.soxey6.engine.events.input.mouse.scroll;
 
-import me.soxey6.engine.managers.event.Event;
+import me.soxey6.engine.managers.event.objects.Event;
 
 /**
  * MouseScrollEvent is a class used for sorting, filtering and dispatching
@@ -31,7 +31,7 @@ import me.soxey6.engine.managers.event.Event;
  * @author Spanish Tech
  * @see Event
  */
-public class MouseScrollEvent extends Event<MouseScrollEvent> {
+public class MouseScrollEvent extends Event {
 
 	private int dScroll;
 

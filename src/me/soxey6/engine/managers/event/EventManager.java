@@ -3,98 +3,87 @@ package me.soxey6.engine.managers.event;
 import java.util.ArrayList;
 import java.util.HashMap;
 
-import me.soxey6.engine.events.ticks.render.RenderEvent;
-import me.soxey6.engine.main.Engine;
+import me.soxey6.engine.managers.event.objects.Event;
+import me.soxey6.engine.managers.event.objects.listener.EventListener;
 
-/**
- * This class is used for dispatching, hooking and managing events. It is
- * effective at creating efficient and optimized calls to other classes and
- * objects.
- * 
- * @author pchilds
- *
- */
 @SuppressWarnings({ "rawtypes", "unchecked" })
 public class EventManager {
-
-	private static final long THREAD_CREATION_INTERVAL = 50;
-
-	private HashMap<Class<? extends Event>, ArrayList<EventListener>> eventListeners;
 	private static EventManager eventManager;
 
-	private long lastThreadCreation;
+	private final long THREAD_CREATION_DELAY = 10;
+
+	private long lastRun = 0;
+
+	private HashMap<Class<? extends Event>, ArrayList<EventListener>> eventListenerList;
 
 	public EventManager() {
 		eventManager = this;
-		eventListeners = new HashMap<Class<? extends Event>, ArrayList<EventListener>>();
-		lastThreadCreation = 0;
+		eventListenerList = new HashMap<Class<? extends Event>, ArrayList<EventListener>>();
 	}
 
-	/**
-	 * Used for dispatching certain events to Listeners.
-	 * 
-	 * @param String
-	 *            eventName - The name of the event to trigger.
-	 */
 	public void dispatch(Event event) {
-		if (eventListeners.containsKey(event.getClass())) {
-			for (int i = 0; i < eventListeners.get(event.getClass()).size(); i++) {
-				Engine.getEngine().getPerformanceMonitor().eps++;
-				if (eventListeners.get(event.getClass()).get(i) != null)
-					if (needCurrentThread(event)) {
-						eventListeners.get(event.getClass()).get(i)
-								.setEvent(event);
-						new Thread(eventListeners.get(event.getClass()).get(i),
-								eventListeners.get(event.getClass()).get(i)
-										.toString()).start();
-						lastThreadCreation = System.currentTimeMillis();
-					} else {
-						eventListeners.get(event.getClass()).get(i)
-								.setEvent(event);
-						try {
-							eventListeners.get(event.getClass()).get(i)
-									.onEvent();
-						} catch (Throwable e) {
-							e.printStackTrace();
-						}
-					}
-			}
+		getEventListenerList().entrySet().stream().filter(entry -> entry.getKey().equals(event.getClass()))
+		        .forEach(entry -> entry.getValue().stream()
+		                .filter(eventListener -> eventListener.getEventFilter().getClass().equals(event.getClass()))
+		                .forEach(eventListener -> {
+			                if (needsNewThread()) {
+				                eventListener.setCurrentEvent(event);
+				                new Thread(eventListener).start();
+			                } else {
+				                eventListener.onEvent(event);
+			                }
+
+		                }));
+	}
+
+	public boolean needsNewThread() {
+		// TODO: Do threading
+		if (System.currentTimeMillis() >= lastRun + THREAD_CREATION_DELAY) {
+			lastRun = System.currentTimeMillis();
+			return true;
+		} else {
+			return false;
 		}
-
 	}
 
-	private boolean needCurrentThread(Event event) {
-
-		return !(System.currentTimeMillis() - lastThreadCreation < THREAD_CREATION_INTERVAL || event instanceof RenderEvent);
-	}
-
-	/**
-	 * Used for adding listeners
-	 * 
-	 * @param EventListener
-	 *            eventListener The listener to add
-	 */
-	public void addListener(EventListener eventListener) {
-		if (eventListeners.containsKey(eventListener.getEventFilter()
-				.getClass()))
-			eventListeners.get(eventListener.getEventFilter().getClass()).add(
-					eventListener);
-		else {
+	public void registerListener(EventListener eventListener, Class<? extends Event> eventFilter) {
+		// If the Filter is already registered and has a working array
+		if (getEventListenerList().containsKey(eventFilter)
+		        || getEventListenerList().get(eventFilter) != null) {
+			getEventListenerList().get(eventFilter).add(eventListener);
+		} else {
 			ArrayList<EventListener> tmpArray = new ArrayList<EventListener>();
 			tmpArray.add(eventListener);
-			eventListeners.put(eventListener.getEventFilter().getClass(),
-					tmpArray);
+			getEventListenerList().put(eventFilter, tmpArray);
 		}
+
 	}
 
-	/**
-	 * This function removes an event listener
-	 * 
-	 * @param EventListener
-	 *            eventListener
-	 */
+	public void registerListener(EventListener eventListener) {
+		// If the Filter is already registered and has a working array
+		if (getEventListenerList().containsKey(eventListener.getEventFilter())
+		        || getEventListenerList().get(eventListener.getEventFilter()) != null) {
+			getEventListenerList().get(eventListener.getEventFilter()).add(eventListener);
+		} else {
+			ArrayList<EventListener> tmpArray = new ArrayList<EventListener>();
+			tmpArray.add(eventListener);
+			getEventListenerList().put(eventListener.getEventFilter(), tmpArray);
+		}
+
+	}
+	
+	public void removeListener(EventListener eventListener, Class<? extends Event> eventFilter) {
+		if (getEventListenerList().containsKey(eventFilter)
+		        || getEventListenerList().get(eventFilter) != null) {
+			getEventListenerList().get(eventFilter).remove(eventListener);
+		}
+	}
+	
 	public void removeListener(EventListener eventListener) {
-		eventListeners.remove(eventListener);
+		if (getEventListenerList().containsKey(eventListener.getEventFilter())
+		        || getEventListenerList().get(eventListener.getEventFilter()) != null) {
+			getEventListenerList().get(eventListener.getEventFilter()).remove(eventListener);
+		}
 	}
 
 	public static EventManager getEventManager() {
@@ -105,4 +94,16 @@ public class EventManager {
 		EventManager.eventManager = eventManager;
 	}
 
+	public HashMap<Class<? extends Event>, ArrayList<EventListener>> getEventListenerList() {
+		return eventListenerList;
+	}
+
+	public void setEventListenerList(HashMap<Class<? extends Event>, ArrayList<EventListener>> eventListenerList) {
+		this.eventListenerList = eventListenerList;
+	}
+	
+	public void finalize() throws Throwable{
+		setEventListenerList(new HashMap<Class<? extends Event>, ArrayList<EventListener>>());
+		super.finalize();
+	}
 }

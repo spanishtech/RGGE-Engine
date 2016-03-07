@@ -1,9 +1,10 @@
 package me.soxey6.engine.managers.scene;
 
 import me.soxey6.engine.events.scene.FocusEvent;
+import me.soxey6.engine.events.scene.SceneCreateEvent;
 import me.soxey6.engine.main.Engine;
 import me.soxey6.engine.main.Wrapper;
-import me.soxey6.engine.managers.event.EventListener;
+import me.soxey6.engine.managers.event.objects.listener.EventListener;
 import me.soxey6.engine.objects.gui.Gui;
 
 /**
@@ -18,7 +19,6 @@ import me.soxey6.engine.objects.gui.Gui;
  * @author spanish
  *
  */
-@SuppressWarnings("rawtypes")
 public class Scene extends Wrapper {
 	private final boolean LIMIT_LOGIC = true;
 	private final long LOGIC_INCREMENT_MS = 100;
@@ -32,8 +32,10 @@ public class Scene extends Wrapper {
 
 	private long lastLogicTime;
 
-	private EventListener focusListener;
-	private EventListener unfocusListener;
+	private EventListener<FocusEvent> focusListener = new EventListener<FocusEvent>(FocusEvent.class, event -> {
+		getLogger().log(DEBUG, event.isFocused());
+		onFocus(event.isFocused());
+	});
 
 	public Scene(String name) {
 		// Setup variables
@@ -44,33 +46,9 @@ public class Scene extends Wrapper {
 		this.gui = new Gui(this);
 		this.getSceneManager().addScene(this);
 
+		getEventManager().dispatch(new SceneCreateEvent(this));
 		// Log the creation
-		this.getLogger().log(this.getLogger().DEBUG,
-				"Creating Scene: " + this.getName());
-
-		// Create listeners
-		getEventManager().addListener(
-				unfocusListener = new EventListener<Scene, FocusEvent>(this,
-						new FocusEvent(this, false), true) {
-					@Override
-					public void onEvent(FocusEvent event) {
-						getLogger().log(DEBUG, "Ping 2");
-						getLogger().log(DEBUG, event.isFocused());
-						//onFocus(event.isFocused());
-					}
-				});
-
-		getEventManager().addListener(
-				focusListener = new EventListener<Scene, FocusEvent>(this,
-						new FocusEvent(this, true), true) {
-					@Override
-					public void onEvent(FocusEvent event) {
-						getLogger().log(DEBUG, "Ping 1");
-						getLogger().log(DEBUG, event.isFocused());
-						//onFocus(event.isFocused());
-					}
-				});
-
+		this.getLogger().log(this.getLogger().DEBUG, "Creating Scene: " + this.getName());
 	}
 
 	public void onFocus(boolean focused) {
@@ -132,20 +110,12 @@ public class Scene extends Wrapper {
 		return LOGIC_INCREMENT_MS;
 	}
 
-	public EventListener getFocusListener() {
+	public EventListener<FocusEvent> getFocusListener() {
 		return focusListener;
 	}
 
-	public void setFocusListener(EventListener focusListener) {
+	public void setFocusListener(EventListener<FocusEvent> focusListener) {
 		this.focusListener = focusListener;
-	}
-
-	public EventListener getUnfocusListener() {
-		return unfocusListener;
-	}
-
-	public void setUnfocusListener(EventListener unfocusListener) {
-		this.unfocusListener = unfocusListener;
 	}
 
 	public void finalize() throws Throwable {

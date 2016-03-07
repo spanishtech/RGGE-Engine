@@ -1,0 +1,7 @@
+1. Setup modules
+2. Setup 3D rendering
+3. Setup file manager
+4. Setup network manager
+5. Setup proper game world management (World, characters, items, gui, etc)
+6. Setup console to allow JavaScript
+7. Allow modules to be made in JavaScript

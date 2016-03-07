@@ -19,7 +19,7 @@
 
 package me.soxey6.engine.events.input.mouse.button;
 
-import me.soxey6.engine.managers.event.Event;
+import me.soxey6.engine.managers.event.objects.Event;
 
 /**
  * MouseButtonEvent is a class used for sorting, filtering and dispatching
@@ -31,7 +31,7 @@ import me.soxey6.engine.managers.event.Event;
  * @author Spanish Tech
  * @see Event
  */
-public class MouseButtonEvent extends Event<MouseButtonEvent> {
+public class MouseButtonEvent extends Event {
 
 	private float x;
 	private float y;

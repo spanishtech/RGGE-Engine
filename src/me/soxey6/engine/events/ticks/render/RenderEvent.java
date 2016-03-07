@@ -19,7 +19,7 @@
 
 package me.soxey6.engine.events.ticks.render;
 
-import me.soxey6.engine.managers.event.Event;
+import me.soxey6.engine.managers.event.objects.Event;
 
 /**
  * RenderEvent is a class used for sorting, filtering and dispatching events.
@@ -31,7 +31,7 @@ import me.soxey6.engine.managers.event.Event;
  * @author Spanish Tech
  * @see Event
  */
-public class RenderEvent extends Event<RenderEvent> {
+public class RenderEvent extends Event {
 
 	/**
 	 * Constructs a RenderEvent object NOTE: There is no data for this event.

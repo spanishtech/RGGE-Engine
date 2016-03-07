@@ -4,7 +4,7 @@ import me.soxey6.engine.events.input.mouse.button.MouseButtonEvent;
 import me.soxey6.engine.events.input.mouse.move.MouseMoveEvent;
 import me.soxey6.engine.events.ticks.render.RenderEvent;
 import me.soxey6.engine.main.Wrapper;
-import me.soxey6.engine.managers.event.EventListener;
+import me.soxey6.engine.managers.event.objects.listener.EventListener;
 
 /**
  * The basic GuiElement class used for creating any UI element
@@ -20,9 +20,9 @@ public class GuiElement extends Wrapper {
 	private boolean clicked;
 	private boolean released;
 
-	private EventListener<GuiElement, MouseMoveEvent> mouseMoveListener;
-	private EventListener<GuiElement, MouseButtonEvent> mouseButtonListener;
-	private EventListener<GuiElement, RenderEvent> renderListener;
+	private EventListener<MouseMoveEvent> mouseMoveListener;// = new EventListener<MouseMoveEvent	>(MouseMoveEvent.class);
+	private EventListener<MouseButtonEvent> mouseButtonListener;
+	private EventListener<RenderEvent> renderListener;
 
 	/**
 	 * The basic GuiElement class used for creating any UI element
