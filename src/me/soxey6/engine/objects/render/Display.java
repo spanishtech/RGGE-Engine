@@ -32,7 +32,7 @@ import me.soxey6.engine.events.ticks.render.RenderEvent;
 import me.soxey6.engine.main.Engine;
 import me.soxey6.engine.main.Settings;
 import me.soxey6.engine.managers.event.EventManager;
-import me.soxey6.engine.objects.Setting;
+import me.soxey6.engine.managers.setting.Setting;
 import me.soxey6.utils.Logger;
 
 import org.lwjgl.glfw.GLFWvidmode;

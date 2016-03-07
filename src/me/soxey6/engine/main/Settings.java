@@ -1,8 +1,9 @@
 package me.soxey6.engine.main;
 
+import java.io.File;
 import java.util.HashMap;
 
-import me.soxey6.engine.objects.Setting;
+import me.soxey6.engine.managers.setting.Setting;
 import me.soxey6.utils.Logger;
 
 /**
@@ -70,7 +71,37 @@ public class Settings {
 	public void LoadSettings() {
 		// TODO: Add the ability to load settings with GSON in a json format.
 	}
+	
+	/**
+	 * This function will save all settings currently loaded
+	 */
+	public void saveSettings(String location) {
+		// TODO: Add the ability to save settings with GSON in a json format.
+	}
 
+	/**
+	 * This function will load all settings saved
+	 */
+	public void LoadSettings(String location) {
+		// TODO: Add the ability to load settings with GSON in a json format.
+	}
+
+
+	/**
+	 * This function will save all settings currently loaded
+	 */
+	public void saveSettings(File file) {
+		// TODO: Add the ability to save settings with GSON in a json format.
+	}
+
+	/**
+	 * This function will load all settings saved
+	 */
+	public void LoadSettings(File file) {
+		// TODO: Add the ability to load settings with GSON in a json format.
+	}
+
+	
 	public HashMap<String, Setting> getSettingsList() {
 		return settingsList;
 	}

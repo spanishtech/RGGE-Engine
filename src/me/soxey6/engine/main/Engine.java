@@ -152,12 +152,22 @@ public class Engine {
 	}
 
 	private void initGame() {
+		
+		getModuleManager().loadModules();
+		
+		getSettingManager().loadSyetemSettings();
+		
+		getSettingManager().loadModuleSettings();
+		
+		getSettingManager().loadSettings();
+		
+		
 		getLogger().log(getLogger().DEBUG, display.getWindowHandler());// "Creating Input Manager Instance");
 		inputThread = new Thread(inputManager = new InputManager(), "Input manager");
 		inputThread.start();
-		new Splash();
-		getSceneManager().switchScene("SPLASH");
-
+		
+		
+		
 	}
 
 	private void initDisplay() {

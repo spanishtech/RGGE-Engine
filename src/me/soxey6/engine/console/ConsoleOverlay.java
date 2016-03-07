@@ -12,7 +12,7 @@ public class ConsoleOverlay {
 		content = "";
 		curserLocation = 0;
 	}
-
+	
 	public void newLetter(int keyCode) {
 
 	}
